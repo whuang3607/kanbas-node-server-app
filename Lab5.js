@@ -1,7 +1,10 @@
 const assignment = {
-  id: 1, title: "NodeJS Assignment",
+  id: 1, 
+  title: "NodeJS Assignment",
   description: "Create a NodeJS server with ExpressJS",
-  due: "2021-10-10", completed: false, score: 0,
+  due: "2021-10-10", 
+  completed: false, 
+  score: 0
 };
 
 const module = {
@@ -26,6 +29,18 @@ const Lab5 = (app) => {
     res.json(assignment);
   });
 
+  app.get("/a5/assignment/score/:newScore", (req, res) => {
+    const { newScore } = req.params;
+    assignment.score = parseInt(newScore);
+    res.json(assignment);
+  });
+
+  app.get("/a5/assignment/completed/:newCompleted", (req, res) => {
+    const { newCompleted } = req.params;
+    assignment.completed = "true" === newCompleted;
+    res.json(assignment);
+  });
+
   app.get("/a5/module", (req, res) => {
     res.json(module);
   });
@@ -37,6 +52,12 @@ const Lab5 = (app) => {
   app.get("/a5/module/name/:newName", (req, res) => {
     const { newName } = req.params;
     module.name = newName;
+    res.json(module);
+  });
+
+  app.get("/a5/module/description/:newDescription", (req, res) => {
+    const { newDescription } = req.params;
+    module.description = newDescription;
     res.json(module);
   });
 
