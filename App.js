@@ -7,10 +7,7 @@ import ModuleRoutes from "./Kanbas/modules/routes.js";
 import AssignmentRoutes from './Kanbas/assignments/routes.js';
 
 const app = express()
-app.use(cors({
-    origin: "https://a5--famous-naiad-09c547.netlify.app/",
-    credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 CourseRoutes(app);
 ModuleRoutes(app);
