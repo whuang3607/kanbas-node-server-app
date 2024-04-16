@@ -2,10 +2,10 @@ import * as dao from "./dao.js";
 
 export default function UserRoutes(app) {
     const createUser = async (req, res) => {
-        const user = req.body;
-        delete user._id;
-        const result = await dao.createUser(user)
-        res.json(result);
+        // const user = req.body;
+        // const result = await dao.createUser(user)
+        const user = await dao.createUser(req.body);
+        res.json(user);
     };
     
     const deleteUser = async (req, res) => {
@@ -50,7 +50,10 @@ export default function UserRoutes(app) {
     
     const signin = async (req, res) => { 
         const { username, password } = req.body;
+        console.log(username);
+        console.log(password);
         const currentUser = await dao.findUserByCredentials(username, password);
+        console.log(currentUser);
         if (currentUser) {
             req.session["currentUser"] = currentUser;
             res.json(currentUser);
@@ -60,7 +63,7 @@ export default function UserRoutes(app) {
     };
     
     const profile = async (req, res) => {
-        const currentUser = req.session["currentUser"];
+        let currentUser = req.session["currentUser"];
         if (!currentUser) {
           res.sendStatus(401);
           return;
@@ -83,11 +86,7 @@ export default function UserRoutes(app) {
     
     app.delete("/api/users/:userId", deleteUser);
     
-    app.post("/api/users/signup", signup);
-    
     app.post("/api/users/signin", signin);
-    
-    app.post("/api/users/signout", signout);
     
     app.post("/api/users/profile", profile);
 
