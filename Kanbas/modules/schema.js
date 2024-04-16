@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
-    id: {type: String, required: true, unique: true},
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     firstName: String,
@@ -12,6 +11,6 @@ const userSchema = new mongoose.Schema({
       enum: ["STUDENT", "FACULTY", "ADMIN", "USER"],
       default: "USER",},
   },
-  { collection: "users" }
+  { collection: "modules" }
 );
 export default userSchema;
