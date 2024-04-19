@@ -1,16 +1,14 @@
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    firstName: String,
-    lastName: String,
-    email: String,
-    dob: Date,
-    role: {
-      type: String,
-      enum: ["STUDENT", "FACULTY", "ADMIN", "USER"],
-      default: "USER",},
-  },
-  { collection: "modules" }
-);
-export default userSchema;
+const moduleSchema = new mongoose.Schema({
+    id: String,
+    name: String,
+    description: String,
+    course: String,
+    lessons: [{
+        name: String,
+        description: String,
+        module: String
+    }]
+}, {collection: 'modules'});
+
+export default moduleSchema;

@@ -1,115 +1,49 @@
-// import db from "../Database/index.js";
 import * as dao from "./dao.js";
 
-let globalCurrentModule = null;
+function ModuleRoutes(app) {
 
-export default function ModuleRoutes(app) {
   const createModule = async (req, res) => {
-    const module = req.body;
-    delete module._id
-    const result = await dao.createUser(module);
-    res.json(result);
-  };
+    const { cid } = req.params;
+    console.log(req.body)
+    const module = await dao.createModule(cid, req.body);
+   
+    res.json(module);
+  }
 
-  // const deleteUser = async (req, res) => {
-  //   const status = await dao.deleteUser(req.params.userId);
-  //   res.json(status);
-  // };
+  const deleteModule = async (req, res) => {
+    const status = await dao.deleteModule(req.params.moduleId);
+    console.log(req.params.moduleId, status)
+    res.json(status);
+  }
 
-  // const findAllUsers = async (req, res) => {
-  //   const { role } = req.query;
-  //   if (role) {
-  //       const users = await dao.findUsersByRole(role);
-  //       res.json(users);
-  //       return;
-  //   }
-  //   const users = await dao.findAllUsers();
-  //   res.json(users);
-  // };
+  const findAllModules = async (req, res) => {
+    const modules = await dao.findAllModules();
+    res.json(modules);
+  }
 
-  // const findUserById = async (req, res) => {
-  //   const user = await dao.findUserById(req.params.userId);
-  //   res.json(user);
-  // };
+  const findModuleById = async (req, res) => {
+    const module = await dao.findModuleById(req.params.moduleId);
+    res.json(module);
+  }
 
-  // const updateUser = async (req, res) => {
-  //   const { userId } = req.params;
-  //   const status = await dao.updateUser(userId, req.body);
-  //   req.session.currentUser = await dao.findUserById(userId);
-  //   res.json(status);
-  // };
+  const updateModule = async (req, res) => {
+    const { moduleId } = req.params;
+    const status = await dao.updateModule(moduleId, req.body);
+    res.json(status);
+  }
 
-  // const signup = async (req, res) => {
-  //   const user = await dao.findUserByUsername(req.body.username);
-  //   console.log(user)
-  //   if (user) {
-  //       res.status(400).json({ message: "Username already taken" });
-  //   }
-  //   const currentUser = await dao.createUser(req.body);
-  //   req.session["currentUser"] = currentUser;
-  //   globalCurrentUser = currentUser;
-  //   res.json(currentUser);
-  // };
+  const findModuleforCourse = async (req, res) => {
+    const { courseId } = req.params;
+    const modules = await dao.findModuleforCourse(courseId);
+    console.log(modules);
+    res.json(modules);
+  }
 
-  // const profile = async (req, res) => {
-  //   let currentUser = req.session["currentUser"];
-  //   currentUser = globalCurrentUser;
-  //   if (!currentUser) {
-  //     res.sendStatus(401);
-  //     return;
-  //   }
-  //   res.json(currentUser);
-  // };
-
-  app.post("/api/modules", createModule);
-
-  // app.get("/api/users", findAllUsers);
-
-  // app.post("/api/users/profile", profile);
-
-  // app.put("/api/users/:userId", updateUser);
-
-  // app.delete("/api/users/:userId", deleteUser);
-
-  // app.post("/api/users/signin", signin);
-
-  // app.post("/api/users/signup", signup);
-
-  // app.post("/api/users/signout", signout);
-
-  // app.get("/api/users/:userId", findUserById);
-  // app.put("/api/modules/:mid", (req, res) => {
-  //   const { mid } = req.params;
-  //   const moduleIndex = db.modules.findIndex(
-  //     (m) => m._id === mid);
-  //   db.modules[moduleIndex] = {
-  //     ...db.modules[moduleIndex],
-  //     ...req.body
-  //   };
-  //   res.sendStatus(204);
-  // });    
-
-  // app.delete("/api/modules/:mid", (req, res) => {
-  //   const { mid } = req.params;
-  //   db.modules = db.modules.filter((m) => m._id !== mid);
-  //   res.sendStatus(200);
-  // });
-  
-  // app.post("/api/courses/:cid/modules", (req, res) => {
-  //   const { cid } = req.params;
-  //   const newModule = {
-  //     ...req.body,
-  //     course: cid,
-  //     _id: new Date().getTime().toString(),
-  //   };
-  //   db.modules.push(newModule);
-  //   res.send(newModule);
-  // });
-  
-  // app.get("/api/courses/:cid/modules", (req, res) => {
-  //   const { cid } = req.params;
-  //   const modules = db.modules
-  //   .filter((m) => m.course === cid);
-  //   res.send(modules);
-  // });
+  app.post("/api/courses/:cid/modules", createModule);
+  app.delete("/api/modules/:moduleId", deleteModule);
+  app.get("/api/modules", findAllModules);
+  app.get("/api/modules/:moduleId", findModuleById);
+  app.put("/api/modules/:moduleId", updateModule);
+  app.get("/api/courses/:courseId/modules", findModuleforCourse);
 }
+export default ModuleRoutes;
